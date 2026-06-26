@@ -24,6 +24,21 @@ client.once('ready', () => {
     console.log(`📊 ${client.guilds.cache.size} つのサーバーに参加中`);
 });
 
+const mainChannelId = [1518238783873617980];
+
+client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
+ if(oldGuildMember.voiceChannelID === undefined && newGuildMember.voiceChannelID !== undefined){
+   if(client.channels.get(newGuildMember.voiceChannelID).members.size == 1){
+     if (newGuildMember.voiceChannelID == 1518225406078226435) {
+       newGuildMember.voiceChannel.createInvite({"maxAge":"0"})
+         .then(invite => sendMsg(
+           mainChannelId, "おや、<@" + newGuildMember.user.id +"> が作業しているみたいだ。\n" 
+         ));
+     }
+   }
+ }
+});
+
 // メッセージが送信されたときの処理
 client.on('messageCreate', (message) => {
     // Bot自身のメッセージは無視
